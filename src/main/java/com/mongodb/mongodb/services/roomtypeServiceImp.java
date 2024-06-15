@@ -3,7 +3,6 @@ package com.mongodb.mongodb.services;
 import java.util.List;
 import java.util.Optional;
 
-import javax.naming.NameNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,7 @@ public class roomtypeServiceImp implements roomtypeService {
         if(LFRoomtypes.isPresent()){
             return Optional.of(repository.save(roomType));
         }
-
+        return LFRoomtypes;
         // throw new NameNotFoundException("Room doesn't exist");
     }
 
