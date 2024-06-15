@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Hoteles 
     Requeridos:
         -Long id
@@ -43,3 +44,6 @@ Clientes
 ¿Login? -> security
 
 
+=======
+# reservaHotel
+>>>>>>> f92a72225ba1f7b8e28a601322159d58e7edb0ae
