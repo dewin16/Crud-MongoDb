@@ -5,7 +5,7 @@ Hoteles
         -String nombre hotel
         -Object model direccion [String calle, String ciudad, String codigo postal] 
         -Object entity clientes? [{id}] 
-        -Object model reseñas[{String nombrecliente, int valoracion, String texto}] 
+        -Object model reseñas[{Long id,String nombrecliente, int valoracion, String texto}] 
         -Object entity tipo_habitacion [{id}] 
         
         Opcionales:
