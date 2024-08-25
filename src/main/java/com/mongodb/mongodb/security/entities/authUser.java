@@ -4,12 +4,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.mongodb.mongodb.nombre.entities.idDocument;
 import com.mongodb.mongodb.security.enums.rolesEnum;
 
 import lombok.AllArgsConstructor;
@@ -24,34 +25,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Document(collection = "authUser")
-public class authUser extends idDocument implements UserDetails {
+public class authUser  implements UserDetails {
    
+    @Id
+    private ObjectId id;
     private String username;
     private String email;
     private String password;
     private List<rolesEnum> roles;
-
-    @Override
-    public Long getId() {
-        return super.getId();
-    }
-
-
-
-    @Override
-    public void setId(Long id) {
-        super.setId(id);
-    }
-
-
-
-    public authUser(Long id,String username, String email, String password, List<rolesEnum> roles) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
-    }
 
 
     @Override
@@ -66,6 +47,17 @@ public class authUser extends idDocument implements UserDetails {
             
             
     }
+
+    
+
+    public authUser(String username, String email, String password, List<rolesEnum> roles) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
+
 
     @Override
 public String getUsername() {

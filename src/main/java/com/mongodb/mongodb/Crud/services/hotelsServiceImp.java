@@ -1,17 +1,17 @@
-package com.mongodb.mongodb.nombre.services;
+package com.mongodb.mongodb.Crud.services;
 
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mongodb.mongodb.Constants.AppConstants;
+import com.mongodb.mongodb.Crud.entities.Hotels;
+import com.mongodb.mongodb.Crud.repositories.hotelsRepository;
 import com.mongodb.mongodb.exceptions.alreadyExistException;
 import com.mongodb.mongodb.exceptions.notFoundException;
-import com.mongodb.mongodb.nombre.entities.Hotels;
-import com.mongodb.mongodb.nombre.repositories.hotelsRepository;
-import com.mongodb.mongodb.utils.operations;
 
 @Service
 public class hotelsServiceImp implements hotelsService {
@@ -21,13 +21,10 @@ public class hotelsServiceImp implements hotelsService {
 
     @Override
     public Hotels addHotels(Hotels hotels) {
-        Long id = operations.autoIncrement(repository.findAll());
-        Hotels hotelToSave = new
-         Hotels(id, hotels.getName(),hotels.getAdress(),hotels.getRoomtypes(),
-         hotels.getClients(), hotels.getReviews());
+        
          
         if(!repository.existsByName(hotels.getName())){
-            return  repository.save(hotelToSave);     
+            return  repository.save(hotels);     
 
         }else{
             throw new alreadyExistException(AppConstants.ALREADY_EXIST);
@@ -36,7 +33,7 @@ public class hotelsServiceImp implements hotelsService {
     }
 
     @Override
-    public Hotels updateHotels(Long id, Hotels hotels) {
+    public Hotels updateHotels(ObjectId id, Hotels hotels) {
         Optional<Hotels> LFrestaurant = repository.findById(id);
         if(LFrestaurant.isPresent()){
             return repository.save(hotels);
@@ -47,7 +44,7 @@ public class hotelsServiceImp implements hotelsService {
     }
 
     @Override
-    public void deleteHotels(Long id) {
+    public void deleteHotels(ObjectId id) {
         Optional<Hotels> LFRestaurant  = repository.findById(id);
         if(LFRestaurant.isPresent()){
             Hotels RestaurantFound = LFRestaurant.get();
@@ -57,7 +54,7 @@ public class hotelsServiceImp implements hotelsService {
     }
 
     @Override
-    public Hotels getHotels(Long  id) {
+    public Hotels getHotels(ObjectId  id) {
         Optional<Hotels> LFRestaurant = repository.findById(id);
 
         return LFRestaurant.get();

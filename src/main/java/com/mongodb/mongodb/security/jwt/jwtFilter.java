@@ -32,6 +32,8 @@ public class jwtFilter extends OncePerRequestFilter {
            
             final String  token = getToken(request);
             final String username;
+
+
             if(token == null){
                 filterChain.doFilter(request, response);
                 return;

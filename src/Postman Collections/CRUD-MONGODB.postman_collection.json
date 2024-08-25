@@ -1,0 +1,114 @@
+{
+	"info": {
+		"_postman_id": "19ff10d9-ee3f-46c8-850e-bb63ace5cda3",
+		"name": "CRUD-MONGODB",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32134993"
+	},
+	"item": [
+		{
+			"name": "AUTHREQUEST",
+			"item": [
+				{
+					"name": "localhost:8080/auth/create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"ramon\",\r\n    \"password\": \"caracola\",\r\n    \"roles\": [\"ROLE_ADMIN\"]\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/create",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/auth/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n\r\n    \"username\": \"pedro1222\",\r\n    \"password\": \"picapiedra\"\r\n\r\n\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HOTELS REQUEST",
+			"item": [
+				{
+					"name": "/hotels/add",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYW1vbjEyIiwiaWF0IjoxNzI0NjIzMDA0LCJleHAiOjE3MjQ2MzEwMDR9.88MX-OOD_Kk0Ge_3vcJuZAM2nNaeMs_TkQ6P6YoFFxc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n    \"name\": \"Holte 1453ccc\",\r\n    \"adress\": [{\r\n        \"street\": \"calle 1\",\r\n        \"city\": \"ciudad 1\",\r\n        \"PC\": \"1234\"\r\n    }]\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/hotels/add",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"hotels",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

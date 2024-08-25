@@ -1,4 +1,7 @@
-package com.mongodb.mongodb.nombre.models;
+package com.mongodb.mongodb.Crud.models;
+
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +12,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class Reviews {
 
-    private Long id;
+    @Id
+    private ObjectId id;
     private String clientName;
     private int score;
     private String text;

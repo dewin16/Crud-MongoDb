@@ -1,7 +1,8 @@
-package com.mongodb.mongodb.nombre.customQueries;
+package com.mongodb.mongodb.Crud.customQueries;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -9,7 +10,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import com.mongodb.mongodb.nombre.entities.Hotels;
+import com.mongodb.mongodb.Crud.entities.Hotels;
 
 @Service
 public class CustomQueriesServiceImpl implements CustomQueriesServ {
@@ -19,7 +20,7 @@ public class CustomQueriesServiceImpl implements CustomQueriesServ {
 
     
     @Override
-    public List<Hotels> updateReviews(Long hotelId, Long reviewId, String newReview) {
+    public List<Hotels> updateReviews(ObjectId hotelId, ObjectId reviewId, String newReview) {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(hotelId));
         query.addCriteria(Criteria.where("reviews.id").is(reviewId));

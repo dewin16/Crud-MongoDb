@@ -2,7 +2,6 @@ package com.mongodb.mongodb.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,6 +9,7 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,11 +17,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.mongodb.mongodb.Constants.AppConstants;
+import com.mongodb.mongodb.Crud.entities.RoomType;
+import com.mongodb.mongodb.Crud.entities.Rooms;
+import com.mongodb.mongodb.Crud.repositories.roomsRepository;
+import com.mongodb.mongodb.Crud.services.roomsServiceImp;
 import com.mongodb.mongodb.exceptions.alreadyExistException;
 import com.mongodb.mongodb.exceptions.notFoundException;
-import com.mongodb.mongodb.nombre.entities.Rooms;
-import com.mongodb.mongodb.nombre.repositories.roomsRepository;
-import com.mongodb.mongodb.nombre.services.roomsServiceImp;
 
 @ExtendWith(MockitoExtension.class)
 public class roomsServiceImpTest {
@@ -32,62 +33,70 @@ public class roomsServiceImpTest {
     @InjectMocks
     private roomsServiceImp service;
 
+
+    public  RoomType ROOMTYPE_TEST = new RoomType(new ObjectId("123456abcdef123456abcdef"), "TYPE1", "SOMETHING","SOMETHINGELSE");
+    public  RoomType ROOMTYPE_TEST_UPDATE = new RoomType(new ObjectId("123456abcdef123456abcdef"), "TYPE2","SOMETHING SOMETHING", "SOMETHINGELSE");
+    
+    public  Rooms ROOM_TEST = new Rooms(new ObjectId("123456abcdef123456abcdef"),ROOMTYPE_TEST, "a","b");
+    public  Rooms ROOM_TEST_UPDATE = new Rooms(new ObjectId("123456abcdef123456abcdef"),ROOMTYPE_TEST,"updated","updated");
+    
+
     @Test
     void testAddRooms() {
-        when(repository.existsByName(AppConstants.ROOM_TEST.getType().getName())).thenReturn(false);
-        when(repository.save(any(Rooms.class))).thenReturn(AppConstants.ROOM_TEST);
+        when(repository.existsByName(ROOM_TEST.getType().getName())).thenReturn(false);
+        when(repository.save(any(Rooms.class))).thenReturn(ROOM_TEST);
 
-        Rooms actualRoom = service.addRooms(AppConstants.ROOM_TEST); 
+        Rooms actualRoom = service.addRooms(ROOM_TEST); 
 
         assertAll(
-            () -> assertNotNull(AppConstants.ROOM_TEST),
-            () -> assertEquals(AppConstants.ROOM_TEST, actualRoom)
+            () -> assertNotNull(ROOM_TEST),
+            () -> assertEquals(ROOM_TEST, actualRoom)
             
             );
             
-            verify(repository).save(AppConstants.ROOM_TEST);
+            verify(repository).save(ROOM_TEST);
     } 
 
  
 @Test
 void testAddHotelsError() {
-    when(repository.existsByName(AppConstants.ROOM_TEST.getType().getName())).thenReturn(true);
+    when(repository.existsByName(ROOM_TEST.getType().getName())).thenReturn(true);
     Exception exception  = assertThrows(alreadyExistException.class,
-    () -> service.addRooms(AppConstants.ROOM_TEST));
+    () -> service.addRooms(ROOM_TEST));
     String error = exception.getMessage();
     
     assertAll(
-        () -> assertNotNull(AppConstants.ROOM_TEST),
+        () -> assertNotNull(ROOM_TEST),
         () -> assertEquals(error, "OBJECT ALREADY EXISTS")
         
         );
 
-        verify(repository).existsByName(AppConstants.ROOM_TEST.getType().getName());
+        verify(repository).existsByName(ROOM_TEST.getType().getName());
     } 
     
     
     @Test
     void testDeleteHotels() {
         
-    when(repository.findById(anyLong())).thenReturn(Optional.of(AppConstants.ROOM_TEST));
+    when(repository.findById(new ObjectId("123456abcdef123456abcdef"))).thenReturn(Optional.of(ROOM_TEST));
     doNothing().when(repository).delete(any(Rooms.class));
     
-    service.deleteRooms(anyLong());
+    service.deleteRooms(new ObjectId("123456abcdef123456abcdef"));
     
-    verify(repository).findById(anyLong());
-    verify(repository).delete(AppConstants.ROOM_TEST);
+    verify(repository).findById(new ObjectId("123456abcdef123456abcdef"));
+    verify(repository).delete(ROOM_TEST);
     
 }
 
 @Test
 void testGetAllHotels() {
-    when(repository.findAll()).thenReturn(List.of(AppConstants.ROOM_TEST, AppConstants.ROOM_TEST_UPDATE));
+    when(repository.findAll()).thenReturn(List.of(ROOM_TEST, ROOM_TEST_UPDATE));
     
     List<Rooms> actualRoom = service.getAllRooms();
     
     assertAll(
         () -> assertNotNull(actualRoom),
-        () -> assertEquals(List.of(AppConstants.ROOM_TEST,AppConstants.ROOM_TEST_UPDATE), actualRoom)
+        () -> assertEquals(List.of(ROOM_TEST,ROOM_TEST_UPDATE), actualRoom)
         );
         
         verify(repository).findAll();
@@ -97,16 +106,16 @@ void testGetAllHotels() {
     @Test
     void testGetHotels() {
         
-    when(repository.findById(anyLong())).thenReturn(Optional.of(AppConstants.ROOM_TEST));
+    when(repository.findById(new ObjectId("123456abcdef123456abcdef"))).thenReturn(Optional.of(ROOM_TEST));
     
-    Rooms actual = service.getRoom(anyLong());
+    Rooms actual = service.getRoom(new ObjectId("123456abcdef123456abcdef"));
     
     assertAll(
         () -> assertNotNull(actual),
-        () -> assertEquals(AppConstants.ROOM_TEST, actual)
+        () -> assertEquals(ROOM_TEST, actual)
         );
         
-        verify(repository).findById(anyLong());
+        verify(repository).findById(new ObjectId("123456abcdef123456abcdef"));
         
         
     }
@@ -114,25 +123,25 @@ void testGetAllHotels() {
     @Test
     void testUpdateHotels() {
         
-    when(repository.findById(1L)).thenReturn(Optional.of(AppConstants.ROOM_TEST));
-    when(repository.save(any(Rooms.class))).thenReturn(AppConstants.ROOM_TEST_UPDATE);
+    when(repository.findById(new ObjectId("123456abcdef123456abcdef"))).thenReturn(Optional.of(ROOM_TEST));
+    when(repository.save(any(Rooms.class))).thenReturn(ROOM_TEST_UPDATE);
     
-    Rooms actual = service.updateRooms(1L, AppConstants.ROOM_TEST_UPDATE);
+    Rooms actual = service.updateRooms(new ObjectId("123456abcdef123456abcdef"), ROOM_TEST_UPDATE);
     
     Exception exception = assertThrows(notFoundException.class,
-    () -> service.updateRooms(15L, AppConstants.ROOM_TEST_UPDATE));
+    () -> service.updateRooms(new ObjectId("123456abcdef123456abcde2"), ROOM_TEST_UPDATE));
 
     String error = exception.getMessage();
     
     assertAll(
         () -> assertNotNull(actual),
-        () -> assertEquals(AppConstants.ROOM_TEST_UPDATE, actual),
+        () -> assertEquals(ROOM_TEST_UPDATE, actual),
         () -> assertEquals(error, "COULDN'T FIND THE OBJECT")  //
         
         );
         
-        verify(repository).findById(1L);
-        verify(repository).save(AppConstants.ROOM_TEST_UPDATE);
+        verify(repository).findById(new ObjectId("123456abcdef123456abcdef"));
+        verify(repository).save(ROOM_TEST_UPDATE);
         
     }
    

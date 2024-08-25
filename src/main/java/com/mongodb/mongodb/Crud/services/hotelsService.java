@@ -1,15 +1,17 @@
-package com.mongodb.mongodb.nombre.services;
+package com.mongodb.mongodb.Crud.services;
 
 import java.util.List;
 
-import com.mongodb.mongodb.nombre.entities.Hotels;
+import org.bson.types.ObjectId;
+
+import com.mongodb.mongodb.Crud.entities.Hotels;
 
 public interface hotelsService {
 
     Hotels addHotels(Hotels restaurants);
-    void deleteHotels(Long id);
-    Hotels updateHotels(Long id, Hotels restaurants);
-    Hotels getHotels(Long id);
+    void deleteHotels(ObjectId id);
+    Hotels updateHotels(ObjectId id, Hotels restaurants);
+    Hotels getHotels(ObjectId id);
     List<Hotels> getAllHotels();
     //Hotels updateReview(Long id);
 }

@@ -1,7 +1,8 @@
-package com.mongodb.mongodb.nombre.controller;
+package com.mongodb.mongodb.Crud.controller;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mongodb.mongodb.nombre.customQueries.CustomQueriesServiceImpl;
-import com.mongodb.mongodb.nombre.entities.Hotels;
-import com.mongodb.mongodb.nombre.services.hotelsServiceImp;
+import com.mongodb.mongodb.Crud.customQueries.CustomQueriesServiceImpl;
+import com.mongodb.mongodb.Crud.entities.Hotels;
+import com.mongodb.mongodb.Crud.services.hotelsServiceImp;
 
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -38,7 +39,7 @@ public class hotelsController {
     }
 
     @GetMapping("/find/{id}")
-    private Hotels findById(@PathVariable Long id){
+    private Hotels findById(@PathVariable ObjectId id){
 
         return service.getHotels(id);
 
@@ -52,7 +53,7 @@ public class hotelsController {
     }
 
     @DeleteMapping("/delete/{id}")
-    private ResponseEntity<?> delete(@PathVariable Long id){
+    private ResponseEntity<?> delete(@PathVariable ObjectId id){
 
         try{
             service.deleteHotels(id);
@@ -65,7 +66,7 @@ public class hotelsController {
 
     @PutMapping("update/{id}")
     
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Hotels hotel) {
+    public ResponseEntity<?> update(@PathVariable ObjectId id, @RequestBody Hotels hotel) {
 
         try{
             service.updateHotels(id, hotel);
@@ -79,7 +80,7 @@ public class hotelsController {
 
     //this doesnt require a JSON on postman, just the text
     @PutMapping("{hotelId}/update/review/{reviewId}")
-    public ResponseEntity<?> updateReview(@PathVariable Long hotelId, @PathVariable Long reviewId, @RequestBody String newReview){
+    public ResponseEntity<?> updateReview(@PathVariable ObjectId hotelId, @PathVariable ObjectId reviewId, @RequestBody String newReview){
 
         try {
             customQueriesServiceImpl.updateReviews(hotelId,reviewId,newReview);

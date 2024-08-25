@@ -1,7 +1,8 @@
-package com.mongodb.mongodb.nombre.controller;
+package com.mongodb.mongodb.Crud.controller;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mongodb.mongodb.nombre.entities.Clients;
-import com.mongodb.mongodb.nombre.services.clientsServiceImp;
+import com.mongodb.mongodb.Crud.entities.Clients;
+import com.mongodb.mongodb.Crud.services.clientsServiceImp;
 
 @RestController
 @RequestMapping("/client")
@@ -32,7 +33,7 @@ public class clientController {
     }
 
     @GetMapping("/find/{id}")
-    private Clients findById(@PathVariable Long id){
+    private Clients findById(@PathVariable ObjectId id){
 
         return service.getClient(id);
 
@@ -46,7 +47,7 @@ public class clientController {
     }
 
     @DeleteMapping("/delete/{id}")
-    private ResponseEntity<?> delete(@PathVariable Long id){
+    private ResponseEntity<?> delete(@PathVariable ObjectId id){
 
         try{
             service.deleteClients(id);
@@ -59,7 +60,7 @@ public class clientController {
 
     @PutMapping("update/{id}")
     
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Clients restaurant) {
+    public ResponseEntity<?> update(@PathVariable ObjectId id, @RequestBody Clients restaurant) {
 
         try{
             service.updateClients(id, restaurant);

@@ -2,7 +2,6 @@ package com.mongodb.mongodb.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,18 +9,17 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Optional;
 
-
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.mongodb.mongodb.Constants.AppConstants;
+import com.mongodb.mongodb.Crud.entities.Clients;
+import com.mongodb.mongodb.Crud.repositories.clientsRepository;
+import com.mongodb.mongodb.Crud.services.clientsServiceImp;
 import com.mongodb.mongodb.exceptions.notFoundException;
-import com.mongodb.mongodb.nombre.entities.Clients;
-import com.mongodb.mongodb.nombre.repositories.clientsRepository;
-import com.mongodb.mongodb.nombre.services.clientsServiceImp;
 
 @ExtendWith(MockitoExtension.class)
 public class clientsServiceImpTest {
@@ -32,24 +30,26 @@ public class clientsServiceImpTest {
     @InjectMocks
     private clientsServiceImp clientsServiceImp;
 
+    public  Clients CLIENT_TEST= new Clients(new ObjectId("123456abcdef123456abcdef"), "Juan","1111","juanpalomo@hotmail.com");
+    public  Clients CLIENT_TEST_UPDATE = new Clients(new ObjectId("123456abcdef123456abcdef"), "Pedro","1111","juanpalomo@hotmail.com");
    
 
     @Test
     void testAddClients() {
       
-        when(clientsRepository.existsByName(AppConstants.CLIENT_TEST.getName())).thenReturn(false);
-        when(clientsRepository.save(AppConstants.CLIENT_TEST)).thenReturn(AppConstants.CLIENT_TEST);
-        Clients clientSaved = clientsServiceImp.addClients(AppConstants.CLIENT_TEST);
+        when(clientsRepository.existsByName(CLIENT_TEST.getName())).thenReturn(false);
+        when(clientsRepository.save(CLIENT_TEST)).thenReturn(CLIENT_TEST);
+        Clients clientSaved = clientsServiceImp.addClients(CLIENT_TEST);
         
         assertAll(
             () -> assertNotNull(clientSaved),
-            () -> assertEquals(AppConstants.CLIENT_TEST.getId(), clientSaved.getId(), "Diff id"),
-            () -> assertEquals(AppConstants.CLIENT_TEST.getMail(), clientSaved.getMail(), "Diff mail"),
-            () -> assertEquals(AppConstants.CLIENT_TEST.getName(), clientSaved.getName(), "Diff name"),
-            () -> assertEquals(AppConstants.CLIENT_TEST.getPhoneNumber(), clientSaved.getPhoneNumber(),
+            () -> assertEquals(CLIENT_TEST.getId(), clientSaved.getId(), "Diff id"),
+            () -> assertEquals(CLIENT_TEST.getMail(), clientSaved.getMail(), "Diff mail"),
+            () -> assertEquals(CLIENT_TEST.getName(), clientSaved.getName(), "Diff name"),
+            () -> assertEquals(CLIENT_TEST.getPhoneNumber(), clientSaved.getPhoneNumber(),
                     "Diff number"));
                     
-        verify(clientsRepository).existsByName(AppConstants.CLIENT_TEST.getName());
+        verify(clientsRepository).existsByName(CLIENT_TEST.getName());
          verify(clientsRepository).save(clientSaved);
 
 
@@ -58,27 +58,27 @@ public class clientsServiceImpTest {
     @Test
     void testDeleteClients() {
 
-        when(clientsRepository.findById(1L)).thenReturn(Optional.of(AppConstants.CLIENT_TEST));
+        when(clientsRepository.findById(new ObjectId("123456abcdef123456abcdef"))).thenReturn(Optional.of(CLIENT_TEST));
         doNothing().when(clientsRepository).delete(any(Clients.class));
 
 
-        clientsServiceImp.deleteClients(1L);
+        clientsServiceImp.deleteClients(new ObjectId("123456abcdef123456abcdef"));
 
-        verify(clientsRepository).delete(AppConstants.CLIENT_TEST);
-        verify(clientsRepository).findById(anyLong());
+        verify(clientsRepository).delete(CLIENT_TEST);
+        verify(clientsRepository).findById(new ObjectId("123456abcdef123456abcdef"));
 
     }
 
     @Test
     void testGetAllClients() {
 
-        when(clientsRepository.findAll()).thenReturn(List.of(AppConstants.CLIENT_TEST));
+        when(clientsRepository.findAll()).thenReturn(List.of(CLIENT_TEST));
 
         List<Clients> actualClient = clientsServiceImp.getAllClients();
 
         assertAll(
             () -> assertNotNull(actualClient),
-            () -> assertEquals(List.of(AppConstants.CLIENT_TEST), actualClient)
+            () -> assertEquals(List.of(CLIENT_TEST), actualClient)
         );
 
         verify(clientsRepository).findAll();
@@ -88,40 +88,40 @@ public class clientsServiceImpTest {
     @Test
     void testGetClient() {
 
-        when(clientsRepository.findById(1L)).thenReturn(Optional.of(AppConstants.CLIENT_TEST));
+        when(clientsRepository.findById(new ObjectId("123456abcdef123456abcdef"))).thenReturn(Optional.of(CLIENT_TEST));
 
-        Clients actualClient = clientsServiceImp.getClient(1L);
+        Clients actualClient = clientsServiceImp.getClient(new ObjectId("123456abcdef123456abcdef"));
 
         assertAll(
             () -> assertNotNull(actualClient),
-            () -> assertEquals(AppConstants.CLIENT_TEST, actualClient)
+            () -> assertEquals(CLIENT_TEST, actualClient)
 
         );
 
-        verify(clientsRepository).findById(1L);
+        verify(clientsRepository).findById(new ObjectId("123456abcdef123456abcdef"));
     }
 
     @Test
     void testUpdateClients() {
 
-        when(clientsRepository.findById(1L)).thenReturn(Optional.of(AppConstants.CLIENT_TEST));
-        when(clientsRepository.save(AppConstants.CLIENT_TEST_UPDATE)).thenReturn(AppConstants.CLIENT_TEST_UPDATE);
+        when(clientsRepository.findById(new ObjectId("123456abcdef123456abcdef"))).thenReturn(Optional.of(CLIENT_TEST));
+        when(clientsRepository.save(CLIENT_TEST_UPDATE)).thenReturn(CLIENT_TEST_UPDATE);
     
-        Clients client = clientsServiceImp.updateClients(1L, AppConstants.CLIENT_TEST_UPDATE);
+        Clients client = clientsServiceImp.updateClients(new ObjectId("123456abcdef123456abcdef"), CLIENT_TEST_UPDATE);
 
-        Exception probando = assertThrows(notFoundException.class,
-         () -> clientsServiceImp.updateClients(15L, client));
-        String error = probando.getMessage();
+        Exception exception = assertThrows(notFoundException.class,
+         () -> clientsServiceImp.updateClients(new ObjectId("123456abcdef123456abcde1"), client));
+        String error = exception.getMessage();
 
         assertAll(
             () -> assertNotNull(client), 
-            () -> assertEquals(AppConstants.CLIENT_TEST_UPDATE.getId(), client.getId(), () -> "ERROR: Different objects"),
+            () -> assertEquals(CLIENT_TEST_UPDATE.getId(), client.getId(), () -> "ERROR: Different objects"),
             () -> assertEquals("Client wasnt found",error )
             
            
             );
             
-        verify(clientsRepository).findById(1L);
-        verify(clientsRepository).save(AppConstants.CLIENT_TEST_UPDATE);
+        verify(clientsRepository).findById(new ObjectId("123456abcdef123456abcdef"));
+        verify(clientsRepository).save(CLIENT_TEST_UPDATE);
     }
 }

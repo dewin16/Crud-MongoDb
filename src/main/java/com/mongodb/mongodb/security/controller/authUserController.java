@@ -23,7 +23,7 @@ public class authUserController {
     @PostMapping("/create")
     private ResponseEntity<?> create(@RequestBody createDto dto){
         authUser authUser =  service.create(dto);
-        return ResponseEntity.ok(authUser.getUsername());
+        return ResponseEntity.ok("WELCOME! " + authUser.getUsername());
     }
 
     @PostMapping("/login")

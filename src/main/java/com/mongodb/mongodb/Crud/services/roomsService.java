@@ -1,14 +1,16 @@
-package com.mongodb.mongodb.nombre.services;
+package com.mongodb.mongodb.Crud.services;
 
 import java.util.List;
 
-import com.mongodb.mongodb.nombre.entities.Rooms;
+import org.bson.types.ObjectId;
+
+import com.mongodb.mongodb.Crud.entities.Rooms;
 
 public interface roomsService {
 
     Rooms addRooms(Rooms rooms);
-    void deleteRooms(Long id);
-    Rooms updateRooms(Long id, Rooms rooms);
-    Rooms getRoom(Long id);
+    void deleteRooms(ObjectId id);
+    Rooms updateRooms(ObjectId id, Rooms rooms);
+    Rooms getRoom(ObjectId id);
     List<Rooms> getAllRooms();
 }

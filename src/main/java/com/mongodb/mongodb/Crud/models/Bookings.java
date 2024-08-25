@@ -1,4 +1,4 @@
-package com.mongodb.mongodb.nombre.models;
+package com.mongodb.mongodb.Crud.models;
 
 import java.time.LocalDate;
 

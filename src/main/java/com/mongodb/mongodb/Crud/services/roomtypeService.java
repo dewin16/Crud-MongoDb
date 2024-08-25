@@ -1,15 +1,17 @@
-package com.mongodb.mongodb.nombre.services;
+package com.mongodb.mongodb.Crud.services;
 
 import java.util.List;
 
-import com.mongodb.mongodb.nombre.entities.RoomType;
+import org.bson.types.ObjectId;
+
+import com.mongodb.mongodb.Crud.entities.RoomType;
 
 public interface roomtypeService {
 
     RoomType addRoomType(RoomType roomType);
-    void deleteRoomtypes(Long id);
-    RoomType updateRoomtypes(Long id, RoomType roomType);
-    RoomType getRoomtype(Long id);
+    void deleteRoomtypes(ObjectId id);
+    RoomType updateRoomtypes(ObjectId id, RoomType roomType);
+    RoomType getRoomtype(ObjectId id);
     List<RoomType> getAllRoomtypes();
 
 }

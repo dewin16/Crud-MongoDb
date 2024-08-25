@@ -1,6 +1,8 @@
-package com.mongodb.mongodb.nombre.entities;
+package com.mongodb.mongodb.Crud.entities;
 
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -13,26 +15,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "RoomTypes")
-public class RoomType extends idDocument {
+public class RoomType  {
 
+    @Id
+    private ObjectId id;
     private String name;
     private String numberOfBeds;
     private String area;
     
-    @Override
-    public Long getId() {
-        return super.getId();
-    }
-    @Override
-    public void setId(Long id) {
-        super.setId(id);
-    }
-    public RoomType(Long id,String name, String numberOfBeds, String area) {
-        this.id = id;
-        this.name = name;
-        this.numberOfBeds = numberOfBeds;
-        this.area = area;
-    }
+
 
     
 

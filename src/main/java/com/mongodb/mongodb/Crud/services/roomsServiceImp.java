@@ -1,17 +1,17 @@
-package com.mongodb.mongodb.nombre.services;
+package com.mongodb.mongodb.Crud.services;
 
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mongodb.mongodb.Constants.AppConstants;
+import com.mongodb.mongodb.Crud.entities.Rooms;
+import com.mongodb.mongodb.Crud.repositories.roomsRepository;
 import com.mongodb.mongodb.exceptions.alreadyExistException;
 import com.mongodb.mongodb.exceptions.notFoundException;
-import com.mongodb.mongodb.nombre.entities.Rooms;
-import com.mongodb.mongodb.nombre.repositories.roomsRepository;
-import com.mongodb.mongodb.utils.operations;
 
 @Service
 public class roomsServiceImp implements roomsService {
@@ -21,17 +21,15 @@ public class roomsServiceImp implements roomsService {
 
     @Override
     public Rooms addRooms(Rooms rooms) {
-        Long id = operations.autoIncrement(repository.findAll());
-        Rooms roomToSave = new Rooms(id, rooms.getType(), rooms.getBeds(), rooms.getPrice());
         if(!repository.existsByName(rooms.getType().getName())){
-            return repository.save(roomToSave);
+            return repository.save(rooms);
         }else{
              throw new alreadyExistException(AppConstants.ALREADY_EXIST);
         }
     }
 
     @Override
-    public void deleteRooms(Long id) {
+    public void deleteRooms(ObjectId id) {
        Optional<Rooms> LFRooms  = repository.findById(id);
         if(LFRooms.isPresent()){
             Rooms roomFound = LFRooms.get();
@@ -40,7 +38,7 @@ public class roomsServiceImp implements roomsService {
     }
 
     @Override
-    public Rooms updateRooms(Long id, Rooms rooms) {
+    public Rooms updateRooms(ObjectId id, Rooms rooms) {
      
         Optional<Rooms> LFRooms = repository.findById(id);
         if(LFRooms.isPresent()){
@@ -52,7 +50,7 @@ public class roomsServiceImp implements roomsService {
     }
 
     @Override
-    public Rooms getRoom(Long id) {
+    public Rooms getRoom(ObjectId id) {
         Optional<Rooms> LFRoom = repository.findById(id);
 
         return LFRoom.get();

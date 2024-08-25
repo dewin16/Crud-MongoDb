@@ -1,10 +1,12 @@
-package com.mongodb.mongodb.nombre.customQueries;
+package com.mongodb.mongodb.Crud.customQueries;
 
 import java.util.List;
 
-import com.mongodb.mongodb.nombre.entities.Hotels;
+import org.bson.types.ObjectId;
+
+import com.mongodb.mongodb.Crud.entities.Hotels;
 
 public interface CustomQueriesServ {
 
-    List<Hotels> updateReviews(Long hotelId, Long reviewId, String newReview);
+    List<Hotels> updateReviews(ObjectId hotelId, ObjectId reviewId, String newReview);
 }

@@ -1,7 +1,8 @@
-package com.mongodb.mongodb.nombre.controller;
+package com.mongodb.mongodb.Crud.controller;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mongodb.mongodb.nombre.entities.Rooms;
-import com.mongodb.mongodb.nombre.services.roomsServiceImp;
+import com.mongodb.mongodb.Crud.entities.Rooms;
+import com.mongodb.mongodb.Crud.services.roomsServiceImp;
 
 @RestController
 @RequestMapping("/rooms")
@@ -31,7 +32,7 @@ public class roomsController {
     }
 
     @GetMapping("/find/{id}")
-    private Rooms findById(@PathVariable Long id){
+    private Rooms findById(@PathVariable ObjectId id){
 
         return service.getRoom(id);
 
@@ -45,7 +46,7 @@ public class roomsController {
     }
 
     @DeleteMapping("/delete/{id}")
-    private ResponseEntity<?> delete(@PathVariable Long id){
+    private ResponseEntity<?> delete(@PathVariable ObjectId id){
 
         try{
             service.deleteRooms(id);
@@ -58,7 +59,7 @@ public class roomsController {
 
     @PutMapping("update/{id}")
     
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Rooms room) {
+    public ResponseEntity<?> update(@PathVariable ObjectId id, @RequestBody Rooms room) {
 
         try{
             service.updateRooms(id, room);

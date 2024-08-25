@@ -5,6 +5,7 @@ package com.mongodb.mongodb.security.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +22,6 @@ import com.mongodb.mongodb.security.entities.authUser;
 import com.mongodb.mongodb.security.enums.rolesEnum;
 import com.mongodb.mongodb.security.jwt.jwtService;
 import com.mongodb.mongodb.security.repository.authUserRepository;
-import com.mongodb.mongodb.utils.operations;
 
 @Service
 public class authUserService {
@@ -39,7 +39,7 @@ public class authUserService {
     AuthenticationManager authenticationManager;
 
     public authUser create(createDto dto){
-        if(!repository.existsByUsername(dto.getUsername()) && repository.existsByEmail(dto.getEmail())){
+        if(repository.existsByUsername(dto.getUsername())){
             throw new alreadyExistException(AppConstants.ALREADY_EXIST);
         }else{
            
@@ -61,13 +61,12 @@ public class authUserService {
 
     private authUser mapFromDto(createDto dto){
 
-        Long id = operations.autoIncrement(repository.findAll());
 
         
         List<rolesEnum> roles = 
         dto.getRoles().stream().map(rol -> rolesEnum.valueOf(rol)).collect(Collectors.toList());
 
-        authUser authUser = new authUser(id, dto.getUsername(),
+        authUser authUser = new authUser(new ObjectId(),dto.getUsername(),
          dto.getEmail(), 
         passwordEncoder.encode(dto.getPassword()), roles
         );

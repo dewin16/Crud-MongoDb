@@ -1,17 +1,17 @@
-package com.mongodb.mongodb.nombre.services;
+package com.mongodb.mongodb.Crud.services;
 
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mongodb.mongodb.Constants.AppConstants;
+import com.mongodb.mongodb.Crud.entities.Clients;
+import com.mongodb.mongodb.Crud.repositories.clientsRepository;
 import com.mongodb.mongodb.exceptions.alreadyExistException;
 import com.mongodb.mongodb.exceptions.notFoundException;
-import com.mongodb.mongodb.nombre.entities.Clients;
-import com.mongodb.mongodb.nombre.repositories.clientsRepository;
-import com.mongodb.mongodb.utils.operations;
 
 @Service
 public class clientsServiceImp implements clientsService {
@@ -22,11 +22,9 @@ public class clientsServiceImp implements clientsService {
     @Override
     public Clients addClients(Clients clients) {
 
-        Long id = operations.autoIncrement(repository.findAll());
-        Clients client = new Clients(id,clients.getName(),clients.getPhoneNumber(), clients.getMail());
 
         if(!repository.existsByName(clients.getName())){
-            return  repository.save(client);
+            return  repository.save(clients);
         }else{
             throw new alreadyExistException(AppConstants.ALREADY_EXIST);
         }
@@ -35,7 +33,7 @@ public class clientsServiceImp implements clientsService {
     }
 
     @Override
-    public void deleteClients(Long id) {
+    public void deleteClients(ObjectId id) {
         Optional<Clients> LFClients  = repository.findById(id);
         if(LFClients.isPresent()){
             Clients ClientFound = LFClients.get();
@@ -46,7 +44,7 @@ public class clientsServiceImp implements clientsService {
     }
 
     @Override
-    public Clients updateClients(Long id, Clients clients) {
+    public Clients updateClients(ObjectId id, Clients clients) {
 
         Optional<Clients> LFClient = repository.findById(id);
         if(LFClient.isPresent()){
@@ -58,7 +56,7 @@ public class clientsServiceImp implements clientsService {
     }
 
     @Override
-    public Clients getClient(Long id) {
+    public Clients getClient(ObjectId id) {
         Optional<Clients> LFClient = repository.findById(id);
 
         return LFClient.get();
