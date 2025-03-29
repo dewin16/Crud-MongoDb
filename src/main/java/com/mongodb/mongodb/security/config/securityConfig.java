@@ -10,14 +10,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.mongodb.mongodb.security.jwt.jwtFilter;
+ import com.mongodb.mongodb.security.jwt.jwtFilter;
 
 @Configuration
 @EnableWebSecurity
 public class securityConfig    {
 
-    @Autowired
-    private jwtFilter jwtFilter;
+     @Autowired
+     private jwtFilter jwtFilter;
 
     @Autowired
     private AuthenticationProvider authenticationProvider;
@@ -31,7 +31,7 @@ public class securityConfig    {
               .disable())
           .authorizeHttpRequests(authRequest ->
             authRequest
-              .requestMatchers("/auth/**").permitAll()
+              .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs*/**").permitAll()
               .anyRequest().authenticated()
               )
           .sessionManagement(sessionManager->
